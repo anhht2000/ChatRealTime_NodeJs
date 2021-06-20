@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -8,7 +9,6 @@ const io = require("socket.io")(server);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'resource','views'));
-app.use(expressLayouts);
 
 //nhung file tinh
 app.use(express.static(path.join(__dirname, '\\public')));
@@ -41,4 +41,4 @@ io.on('connection',function(socket){
 
 route(app);
 
-server.listen(3000);
+server.listen(process.env.PORT ||3000);
