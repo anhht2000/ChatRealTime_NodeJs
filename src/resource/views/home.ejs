@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello socket</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div id="wrapper">
+        <h2 id="title">Demo Chat SocketIo with NodeJs</h2>
+        <input type="text" id="txtUser" placeholder="Please enter User Name">
+        <input type="button" id="txtButton" value="Đăng kí">
+        <div class="groupChat">
+            <div id="left">
+                <h4 class="userOnline">
+                    User Online
+                </h4>
+                <div id="listUsers"></div>
+            </div>
+            <div id="right">
+                <div id="listMess">
+                </div>
+                <input type="text" id="txtMessage" placeholder="Message....">
+                <input type="button" id="btnChat" value="Chat" />
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    let socket = io("http://localhost:3000")
+    //that bai dang ki
+    socket.on("server_send_fail",function(data){
+        alert(data+" not availble")
+    })
+    //thanh cong dang ki
+    socket.on("server_send_success",function(datas){
+        let content =`<div class="userList" id="`+datas.id+`"> ${datas.data}</div>`;
+        $("#listUsers").append(content)
+        //hidform
+        socket.on("server_send_success-one",function(data){
+            $("#txtUser").hide(1000);
+            $("#txtButton").hide(1000);
+        }) 
+    })
+    //thanh cong mess
+    socket.on("server_send_message",function(data){
+        let contentData = `<div style="display:flex"><span style="color:red;">${data.UserName}</span>:<p style="margin:0">${data.mess}</p></div>`
+        console.log(contentData);
+        $("#listMess").append(contentData);
+    })
+    //gui ai choc
+    socket.on("server_send_whoChoc",function(data){
+        alert(data+'vua moi choc ban')
+    })
+
+
+    $(document).ready(function(){
+        $('#txtButton').click(function(){
+            socket.emit("client_send_userName",$('#txtUser').val())
+        })
+        $("#btnChat").click(function(){
+            socket.emit("client_send_message",$('#txtMessage').val())
+        });
+        $(document).on('click','.userList',function(){
+            let id = $(this).attr("id");
+            socket.emit("client_choc_user",id);
+        })
+    });
+</script>
+</html>

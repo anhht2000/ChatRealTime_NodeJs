@@ -1,0 +1,48 @@
+body {
+  background-color: #d7dfed; }
+  body #wrapper {
+    width: 600px;
+    margin: 0 auto;
+    border: 2px solid #333; }
+    body #wrapper #txtUser {
+      margin: 5px;
+      padding: 8px;
+      outline: none;
+      border: none; }
+    body #wrapper #txtButton {
+      width: 100px;
+      line-height: 30px;
+      border-radius: 3px; }
+    body #wrapper .groupChat {
+      display: flex;
+      margin-top: 10px; }
+    body #wrapper #left {
+      width: 30%;
+      background-color: #eeee96; }
+      body #wrapper #left .userOnline {
+        text-align: center;
+        background-color: #5252a8;
+        padding: 8px 0;
+        color: white;
+        margin: 0; }
+      body #wrapper #left #listUsers {
+        text-align: center; }
+    body #wrapper #right {
+      width: 70%;
+      background-color: #ec8f7f; }
+      body #wrapper #right #listMess {
+        height: 250px;
+        overflow-y: scroll; }
+      body #wrapper #right #txtMessage {
+        margin-top: 5px;
+        margin-left: 10px;
+        width: 80%;
+        padding: 5px;
+        border-radius: 5px;
+        outline: none;
+        border: none; }
+      body #wrapper #right #btnChat {
+        width: 50px;
+        height: 27px;
+        border: none;
+        border-radius: 5px; }

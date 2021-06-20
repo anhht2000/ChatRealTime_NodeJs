@@ -1,0 +1,74 @@
+body {
+    background-color: #d7dfed;
+
+    #wrapper {
+        // padding-top: 600px;
+        width: 600px;
+        margin: 0 auto;
+        border: 2px solid #333;
+
+        #txtUser {
+            margin: 5px;
+            padding: 8px;
+            outline: none;
+            border: none;
+        }
+
+        #txtButton {
+            width: 100px;
+            line-height: 30px;
+            border-radius: 3px;
+            // border: none;
+            // outline: none;
+        }
+
+        .groupChat {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #left {
+            width: 30%;
+            background-color: rgb(238, 238, 150);
+
+            .userOnline {
+                text-align: center;
+                background-color: #5252a8;
+                padding: 8px 0;
+                color: white;
+                margin: 0;
+            }
+
+            #listUsers {
+                text-align: center;
+            }
+        }
+
+        #right {
+            width: 70%;
+            background-color: rgb(236, 143, 127);
+
+            #listMess {
+                height: 250px;
+                overflow-y: scroll;
+            }
+
+            #txtMessage {
+                margin-top: 5px;
+                margin-left: 10px;
+                width: 80%;
+                padding: 5px;
+                border-radius: 5px;
+                outline: none;
+                border: none;
+            }
+
+            #btnChat {
+                width: 50px;
+                height: 27px;
+                border: none;
+                border-radius: 5px;
+            }
+        }
+    }
+}

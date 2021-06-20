@@ -1,0 +1,22 @@
+{
+  "name": "chatsocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index",
+    "begin": "nodemon --inspect src/index",
+    "watch": "node-sass --watch src/resource/scss --output src/public/css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TuanAnhhoag",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-layout": "^0.1.0",
+    "node-sass": "^6.0.0",
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.1.2"
+  }
+}
