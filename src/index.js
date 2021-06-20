@@ -1,5 +1,4 @@
 const express = require('express');
-var expressLayouts = require('express-ejs-layouts');
 const app = express();
 const path = require('path');
 const route = require('./router');
