@@ -9,18 +9,33 @@
 </head>
 <body>
     <div id="wrapper">
-        <h2 id="title">Demo Chat SocketIo with NodeJs</h2>
+        <h2 id="title">Messenger with NodeJs-SocketIO</h2>
         <input type="text" id="txtUser" placeholder="Please enter User Name">
         <input type="button" id="txtButton" value="Đăng kí">
+        <input type="text" id="txtRoom" placeholder="Please enter Room Name">
+        <input type="button" id="btnRoom" value="Tạo Room">
         <div class="groupChat">
             <div id="left">
                 <h4 class="userOnline">
                     User Online
                 </h4>
                 <div id="listUsers"></div>
+                <h4 class="userOnline">
+                    Room Current
+                </h4>
+                <div id="listRooms"></div>
             </div>
             <div id="right">
+                <div class="hiSay" style="text-align: right;display: none;">
+                    Hi <span class="currentUser">Tuan</span>
+                    <input type="button" id='btnLogout' type="text" value="log out">
+                </div>
+                <div class="nowRoom">Room Current : <span id="roomName"> Android</span></div>
                 <div id="listMess">
+                </div>
+                <div class="isEntering" style="padding-left: 13px;
+                color: #666; display: none;">
+                    <span id="user_enter">h1</span> đang nhập ...
                 </div>
                 <input type="text" id="txtMessage" placeholder="Message....">
                 <input type="button" id="btnChat" value="Chat" />
@@ -34,27 +49,60 @@
     let socket = io("http://localhost:3000")
     //that bai dang ki
     socket.on("server_send_fail",function(data){
-        alert(data+" not availble")
+        alert(data+" existed")
     })
     //thanh cong dang ki
     socket.on("server_send_success",function(datas){
         let content =`<div class="userList" id="`+datas.id+`"> ${datas.data}</div>`;
         $("#listUsers").append(content)
-        //hidform
-        socket.on("server_send_success-one",function(data){
-            $("#txtUser").hide(1000);
-            $("#txtButton").hide(1000);
-        }) 
     })
+    //hidform
+    socket.on("server_send_success-one",function(data){
+        $("#txtUser").hide(1000);
+        $("#txtButton").hide(1000);
+        $('.hiSay').css("display",'block');
+        $(".currentUser").text(`${data}`);
+    }) 
     //thanh cong mess
     socket.on("server_send_message",function(data){
         let contentData = `<div style="display:flex"><span style="color:red;">${data.UserName}</span>:<p style="margin:0">${data.mess}</p></div>`
-        console.log(contentData);
+        // console.log(contentData);
         $("#listMess").append(contentData);
     })
     //gui ai choc
     socket.on("server_send_whoChoc",function(data){
         alert(data+'vua moi choc ban')
+    })
+    //log out
+    socket.on("server_send_logout",function(data){
+        document.querySelector(`#${data}`).innerHTML = "";
+        // console.log(document.querySelector(`#${data}`));
+    })
+    socket.on("server_send_logout_one",function(data){
+        document.querySelector(`#${data}`).innerHTML = "";
+        $("#txtUser").show(1000);
+        $("#txtButton").show(1000);
+        $('.hiSay').css("display",'none');
+    })
+    //entering
+    socket.on("server_send_entering",function(data){
+        $(".isEntering").css('display','block');
+        $('#user_enter').text(`${data}`);
+    });
+    //stop
+    socket.on("server_send_stop",function(){
+        $(".isEntering").css('display','none');
+    });
+    //room to all client
+    socket.on("server_send_listRoom",function(data){
+        $('#listRooms').html("")
+        data.forEach(item => {
+            $('#listRooms').append(`<h4 style="cursor:pointer;" id='${item}' class="room">${item}</h4>`);
+        });
+    })
+    //room to one 
+    socket.on("server_send_listRoom_one",function(data){
+        $("#roomName").text(`${data}`);
     })
 
 
@@ -68,6 +116,27 @@
         $(document).on('click','.userList',function(){
             let id = $(this).attr("id");
             socket.emit("client_choc_user",id);
+        })
+        //logout
+        $('#btnLogout').click(function(){
+            socket.emit("logout");
+        })
+        //khi nguoi dung nhap
+        $('#txtMessage').focusin(function(){
+            socket.emit("user_is_entering");
+        })
+        $('#txtMessage').focusout(function(){
+            // console.log('out');
+            socket.emit("user_stop_enter");
+        })//tao room
+        $('#btnRoom').click(function(){
+            // console.log($('#txtRoom').val());
+            socket.emit("client_send_room",$('#txtRoom').val())
+        })
+        //tham gia phong khac
+        $(document).on("click","#listRooms",function(e){
+            let idRoom = e.target.closest('.room').getAttribute("id");
+            socket.emit("client_send_idRoom",idRoom);
         })
     });
 </script>

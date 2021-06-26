@@ -1,15 +1,27 @@
 body {
   background-color: #d7dfed; }
   body #wrapper {
-    width: 600px;
+    width: 650px;
     margin: 0 auto;
     border: 2px solid #333; }
+    body #wrapper #title {
+      text-align: center;
+      color: #2d2de7; }
     body #wrapper #txtUser {
       margin: 5px;
       padding: 8px;
       outline: none;
       border: none; }
     body #wrapper #txtButton {
+      width: 100px;
+      line-height: 30px;
+      border-radius: 3px; }
+    body #wrapper #txtRoom {
+      margin: 5px;
+      padding: 8px;
+      outline: none;
+      border: none; }
+    body #wrapper #btnRoom {
       width: 100px;
       line-height: 30px;
       border-radius: 3px; }
@@ -26,13 +38,26 @@ body {
         color: white;
         margin: 0; }
       body #wrapper #left #listUsers {
-        text-align: center; }
+        text-align: center;
+        max-height: 200px;
+        overflow-y: scroll; }
+      body #wrapper #left #listRooms {
+        text-align: center;
+        max-height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden; }
     body #wrapper #right {
       width: 70%;
       background-color: #ec8f7f; }
       body #wrapper #right #listMess {
         height: 250px;
         overflow-y: scroll; }
+      body #wrapper #right .nowRoom {
+        text-align: right;
+        padding: 3px 31px;
+        background: white; }
+        body #wrapper #right .nowRoom #roomName {
+          color: rebeccapurple; }
       body #wrapper #right #txtMessage {
         margin-top: 5px;
         margin-left: 10px;

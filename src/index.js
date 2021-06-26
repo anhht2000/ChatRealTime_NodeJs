@@ -14,9 +14,10 @@ app.set('views', path.join(__dirname, 'resource','views'));
 app.use(express.static(path.join(__dirname, '\\public')));
 //socket
 let arrayUser = [];
+let arrUserid = [];
 
 io.on('connection',function(socket){
-    console.log('Co nguoi vua ket noi ,id:'+socket.id);
+    arrUserid.push(socket.id);
     socket.on("client_send_userName",function(data){
         if(arrayUser.includes(data)){
             // truyen xuong duy nhat thang gui len
@@ -32,13 +33,50 @@ io.on('connection',function(socket){
         }
     })
     socket.on("client_send_message",function(data){
-        io.sockets.emit("server_send_message",{UserName:socket.UserName,mess:data,})
+        io.sockets.in(socket.Phong).emit("server_send_message",{UserName:socket.UserName,mess:data,})
     })
     socket.on("client_choc_user",function(data){
         io.to(data).emit("server_send_whoChoc",socket.UserName)
+    })
+    //logout
+    socket.on("logout",function(){
+        console.log(socket.id);
+        socket.emit("server_send_logout_one",socket.id);
+        socket.broadcast.emit("server_send_logout",socket.id);
+    })
+    //user entering
+    socket.on("user_is_entering",function(){
+        socket.broadcast.in(socket.Phong).emit("server_send_entering",socket.UserName);
+    })
+    socket.on("user_stop_enter",function(){
+        socket.broadcast.in(socket.Phong).emit("server_send_stop");
+    })
+    //tao room
+    socket.on("client_send_room",function(data){
+        socket.join(data);
+        socket.Phong = data;
+
+        let arrRoom = [];
+        for (let item of socket.adapter.rooms){
+            if(arrUserid.includes(item[0])){
+                continue;
+            }
+            else{
+                arrRoom.push(item[0]);
+            }
+        }
+        // vi sau khi join thi no se co san trong socket
+        io.sockets.emit("server_send_listRoom",arrRoom);
+        socket.emit("server_send_listRoom_one",data);
+    })
+    //tham gia phong khac
+    socket.on("client_send_idRoom",function(data){
+        socket.leave(socket.Phong);
+        socket.join(data);
+        socket.emit("server_send_listRoom_one",data);
     })
 })
 
 route(app);
 
-server.listen(process.env.PORT ||3000);
+server.listen(process.env.PORT || 3000);
