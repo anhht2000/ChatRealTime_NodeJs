@@ -11,7 +11,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'resource','views'));
 
 //nhung file tinh
-app.use(express.static(path.join(__dirname, '\\public')));
+app.use(express.static(path.join(__dirname, 'public')));
 //socket
 let arrayUser = [];
 let arrUserid = [];
