@@ -33,7 +33,12 @@ io.on('connection',function(socket){
         }
     })
     socket.on("client_send_message",function(data){
-        io.sockets.in(socket.Phong).emit("server_send_message",{UserName:socket.UserName,mess:data,})
+        console.log(data);
+        if(socket.Phong){
+            io.sockets.in(socket.Phong).emit("server_send_message",{UserName:socket.UserName,mess:data,})
+            return
+        }
+        io.sockets.emit("server_send_message",{UserName:socket.UserName,mess:data,})
     })
     socket.on("client_choc_user",function(data){
         io.to(data).emit("server_send_whoChoc",socket.UserName)

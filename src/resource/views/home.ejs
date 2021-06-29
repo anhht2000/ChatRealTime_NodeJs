@@ -65,6 +65,7 @@
     }) 
     //thanh cong mess
     socket.on("server_send_message",function(data){
+        console.log(data);
         let contentData = `<div style="display:flex"><span style="color:red;">${data.UserName}</span>:<p style="margin:0">${data.mess}</p></div>`
         // console.log(contentData);
         $("#listMess").append(contentData);
@@ -111,6 +112,7 @@
             socket.emit("client_send_userName",$('#txtUser').val())
         })
         $("#btnChat").click(function(){
+            console.log("OK");
             socket.emit("client_send_message",$('#txtMessage').val())
         });
         $(document).on('click','.userList',function(){
