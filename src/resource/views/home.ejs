@@ -46,7 +46,7 @@
 <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    let socket = io("http://localhost:3000")
+    let socket = io("https://chatrealtime-socketio.herokuapp.com/")
     //that bai dang ki
     socket.on("server_send_fail",function(data){
         alert(data+" existed")
